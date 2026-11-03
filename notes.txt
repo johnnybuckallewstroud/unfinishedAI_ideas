@@ -1,0 +1,103 @@
+
+    printf("MENU~ [PROGRAMMER GOD MODE]\n");   
+    printf("Commands: 'quit' to exit, 'vocab' for vocabulary stats, 'neural' for neural stats\n");
+    printf("          'run test' to train network, 'creative' to boost creativity, 'clear' to clear screen\n");
+    printf("          'currentmood' this command will display current mood stats\n");
+    printf("          'learnstats' show learning stats for this session\n");  
+    printf("          'history' show history of conversations\n");  
+    printf("          'clear history' Wipe all conversation history\n");
+    printf("          'clean history' Remove low-confidence history entries\n"); 
+    printf("          'promoe' - Archive high-confidence learning\n");
+    printf("          'good' or 'bad' - Rate last response\n"); 
+    printf("          'thumbsup' - use learned user feedback confidence is a net gain.\n");   
+    printf("          'thunbsdown' - user learned user feeback confidence is a net loss.\n");  
+    printf("		  'preview promote' - shows a list of entries in memory\n");  
+    printf("          'train' - will align neural network\n");  
+    printf("          'run test' and 'train' - align nerual network then reinforce Neural net and test sigmoid stability.\n");  
+    printf("          'test sigmoid' and/or 'test network' -  fully test sigmoid network and show full stats.\n");   
+    printf("          'forget week' - forget Low Confidence Knowledge A pruneing/cut command.\n");  
+    printf("          'use gelu' or 'gelu on' - Enable GELU mode, Responses will now use GELU activatin, GELU provides smoother, more nuanced responses.\n"); 
+    printf("          'use sigmoid', 'gelu off' - Responses will use standard sigmoid activation.\n");  
+    printf("          'activation status'  - current method of neural network learning.\n");  
+    printf("          'compare activations' - See side-by-side comparison.\n"); 
+    printf("          'generate content' - will use ngrams and tokens in A test to see how neural net is learning.\n");  
+    printf("          'create content' - token content generator test.\n");  
+    printf("          'I will teach' [keyword] [content] - teacher mode will learn new content on the fly.\n\n");  
+   
+/*
+ * Evialin.c
+ * Enhanced Virtual Intelligence And Learning Interface Network
+ * 
+ * 100% Open source 
+ * Updated: 2025/10/23 01:27:21AM 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ * 
+ * Notes: she is warning free and works, But is a leaky boat!
+ * As in the stack it leaks 8,272 odd bytes or so in 3 blocks.. code base is very, 
+ * very ugly. I will rewrite the source code for version 5 soon! 
+ * Funny total heap usage 6,606 allocs ? like 666 the number of the beast! WTF? 
+ * 
+ * =4632=== HEAP SUMMARY:
+ * ==4632==     in use at exit: 8,272 bytes in 3 blocks 
+ * ==4632==   total heap usage: 6,606 allocs, 6,603 frees, 4,976,235 bytes allocated
+ * ==4632== 
+ * ==4632== 40 bytes in 1 blocks are definitely lost in loss record 1 of 3
+ * ==4632==    at 0x48417B4: malloc (vg_replace_malloc.c:381)
+ * ==4632==    by 0x11C2EF: createLayerWithActivation (in /home/oneneon/randomx/Evialin)
+ * ==4632==    by 0x11C648: createLayer (in /home/oneneon/randomx/Evialin)
+ * ==4632==    by 0x11C7CC: createNeuralNetwork (in /home/oneneon/randomx/Evialin)
+ * ==4632==    by 0x125A64: main (in /home/oneneon/randomx/Evialin)
+ * ==4632== 
+ * ==4632== 40 bytes in 1 blocks are definitely lost in loss record 2 of 3
+ * ==4632==    at 0x48417B4: malloc (vg_replace_malloc.c:381)
+ * ==4632==    by 0x11C2EF: createLayerWithActivation (in /home/oneneon/randomx/Evialin)
+ * ==4632==    by 0x11C648: createLayer (in /home/oneneon/randomx/Evialin)
+ * ==4632==    by 0x11C84B: createNeuralNetwork (in /home/oneneon/randomx/Evialin)
+ * ==4632==    by 0x125A64: main (in /home/oneneon/randomx/Evialin)
+ * ==4632== 
+ * ==4632== 8,192 bytes in 1 blocks are definitely lost in loss record 3 of 3
+ * ==4632==    at 0x48417B4: malloc (vg_replace_malloc.c:381)
+ * ==4632==    by 0x11FA12: generateContextAwareResponse (in /home/oneneon/randomx/Evialin)
+ * ==4632==    by 0x1281EA: main (in /home/oneneon/randomx/Evialin)
+ * ==4632== 
+ * ==4632== LEAK SUMMARY:
+ * ==4632==    definitely lost: 8,272 bytes in 3 blocks
+ * ==4632==    indirectly lost: 0 bytes in 0 blocks
+ * ==4632==      possibly lost: 0 bytes in 0 blocks
+ * ==4632==    still reachable: 0 bytes in 0 blocks
+ * ==4632==         suppressed: 0 bytes in 0 blocks
+ * ==4632== 
+ * ==4632== Use --track-origins=yes to see where uninitialised values come from
+ * ==4632== For lists of detected and suppressed errors, rerun with: -s
+ * ==4632== ERROR SUMMARY: 516 errors from 105 contexts (suppressed: 0 from 0)
+ * 
+ * How to make project: 
+ * sudo apt-get update
+ * sudo apt-get install libsqlite3-dev libcurl4-openssl-dev libc6-dev valgrind
+ * gcc -g -Wall -o Evialin Evialin.c -lsqlite3 -lcurl -lm
+ * Then just run the program like so: ./Evialin 
+ * 
+ * Debuging/Debugger for gcc source code: 
+ * Example usage: valgrind --leak-check=full ./Evialin
+ * Here are some common Valgrind commands:
+ * valgrind --tool=memcheck ./Evialin   : Run memcheck, which detects memory-related issues.
+ * valgrind --tool=cachegrind ./Evialin : Run cachegrind, which analyzes cache performance.
+ * valgrind --tool=callgrind ./Evialin  : Run callgrind, which generates a call graph.
+ * valgrind --leak-check=full ./Evialin : Run memcheck with full leak checking.
+ * 
+ */
+
+
